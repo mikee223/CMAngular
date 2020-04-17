@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, PipeTransform  } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DecimalPipe, DatePipe } from '@angular/common';
 
@@ -74,6 +75,11 @@ export class CmcategoryComponent implements OnInit {
 
   }
 
+    ngOnInit() {
+
+  }
+  
+
   onPage(event) {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
@@ -97,10 +103,7 @@ export class CmcategoryComponent implements OnInit {
 
     req.onload = () => {      
       cb(JSON.parse(req.response));
-      // console.log(JSON.parse(req.response))
-      // cb();      
     };
-
     req.send();
   }
 
@@ -112,10 +115,7 @@ export class CmcategoryComponent implements OnInit {
     console.log('UPDATED!', this.rows[rowIndex][cell]);
   }
 
-  ngOnInit() {
 
-  }
-  
   updateFilter(event) {    
     var numPipe: PipeTransform; numPipe = this.npipe
     var datePipe: PipeTransform; datePipe = this.dpipe    
@@ -139,11 +139,10 @@ export class CmcategoryComponent implements OnInit {
     // Whenever the filter changes, always go back to the first page
     this.table.offset = 0;    
   }
-
-  // Selection
-
+  
   onSelect({ selected }) {
-    console.log(this.selected)    
+    console.log(this)
+    console.log(this.selected)
   }
 
   onActivate(event) {

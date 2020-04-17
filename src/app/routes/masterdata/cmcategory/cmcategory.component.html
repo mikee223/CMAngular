@@ -47,9 +47,7 @@
             <button class="btn btn-success btn-sm mr-1" type="submit">Save</button>            
             <button class="btn btn-info btn-sm" type="button">New</button>
           </div>
-          
-          
-
+                
         </form>        
       </div>
     </div>
@@ -69,13 +67,13 @@
           </div>
         </div>
 
-        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter'>
+        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter' (select)='onSelect($event)' [selected]="selected" [selectionType]="'single'">
           <!-- <ngx-datatable-column name="Name" [width]="300"></ngx-datatable-column>
           <ngx-datatable-column name="Gender"></ngx-datatable-column>
           <ngx-datatable-column name="Age"></ngx-datatable-column>
           <ngx-datatable-column name="Company" [width]="300"></ngx-datatable-column> -->
 
-          <ngx-datatable-column prop = "Code" ></ngx-datatable-column>
+          <ngx-datatable-column prop="Code" ></ngx-datatable-column>
           <ngx-datatable-column prop="Desc" ></ngx-datatable-column>
           <ngx-datatable-column prop="Cnt" ></ngx-datatable-column>
           <ngx-datatable-column prop="Category" ></ngx-datatable-column>
