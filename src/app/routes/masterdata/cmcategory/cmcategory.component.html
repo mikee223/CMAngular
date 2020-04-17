@@ -1,0 +1,90 @@
+<div class="content-heading">
+  <div>CM Category
+    <small>Maintenance for CM Categories</small>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <!-- START card-->
+    <div class="card card-default">
+      <div class="card-header">CM Categories</div>
+      <div class="card-body">
+        <form role="form">
+          <div class="form-group">
+            <label>Category Code</label>
+            <input class="form-control" type="text" placeholder="Category Code" />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <input class="form-control" type="text" placeholder="Description" />
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label>Count</label>
+              <input class="form-control" type="text" placeholder="Count" />
+            </div>
+
+            <div class="form-group col-md-4">
+              <label>Category</label>
+              <input class="form-control" type="text" placeholder="Category" />
+            </div>
+
+            <div class="form-group col-md-4">
+              <label>Receipt</label>
+              <input class="form-control" type="text" placeholder="Receipt" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Default Reason</label>
+            <input class="form-control" type="text" placeholder="Default Reason" />
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-success btn-sm mr-1" type="submit">Save</button>            
+            <button class="btn btn-info btn-sm" type="button">New</button>
+          </div>
+          
+          
+
+        </form>        
+      </div>
+    </div>
+    <!-- END card-->
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="card card-default">
+      <div class="card-header">Category List</div>
+
+      <div class="card-body">        
+        <div class="row mb-4">
+          <div class="col-lg-4">
+            <input type='text' class="form-control" placeholder='Type to filter the name column...'
+              (keyup)='updateFilter($event)' />
+          </div>
+        </div>
+
+        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter'>
+          <!-- <ngx-datatable-column name="Name" [width]="300"></ngx-datatable-column>
+          <ngx-datatable-column name="Gender"></ngx-datatable-column>
+          <ngx-datatable-column name="Age"></ngx-datatable-column>
+          <ngx-datatable-column name="Company" [width]="300"></ngx-datatable-column> -->
+
+          <ngx-datatable-column prop = "Code" ></ngx-datatable-column>
+          <ngx-datatable-column prop="Desc" ></ngx-datatable-column>
+          <ngx-datatable-column prop="Cnt" ></ngx-datatable-column>
+          <ngx-datatable-column prop="Category" ></ngx-datatable-column>
+          <ngx-datatable-column prop="Rcpt"></ngx-datatable-column>
+          <ngx-datatable-column prop="Reason"></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+
+    </div>
+  </div>
+  
+</div>
