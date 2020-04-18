@@ -31,9 +31,7 @@
               <label>Count</label>              
               <input class="form-control" type="text" formControlName="count" [formControl]="valForm.controls['count']"
                 placeholder="Count" />
-              <span class="text-danger"
-                *ngIf="valForm.controls['count'].hasError('pattern')  && (valForm.controls['count'].dirty || valForm.controls['count'].touched)">This
-                field must contain only digits</span>
+              <span class="text-danger" *ngIf="valForm.controls['count'].hasError('pattern') || valForm.controls['count'].hasError('required') && (valForm.controls['count'].dirty || valForm.controls['count'].touched)">Numbers only (required)</span>              
             </div>
 
             <div class="form-group col-md-4">
@@ -41,8 +39,7 @@
               <input class="form-control" type="text" formControlName="category" [formControl]="valForm.controls['category']"
                 placeholder="Category" />
               <span class="text-danger"
-                *ngIf="valForm.controls['category'].hasError('pattern')  && (valForm.controls['category'].dirty || valForm.controls['category'].touched)">This
-                field must contain only digits</span>
+                *ngIf="valForm.controls['category'].hasError('pattern') || valForm.controls['category'].hasError('required')  && (valForm.controls['category'].dirty || valForm.controls['category'].touched)">Numbers only (required)</span>
             </div>
 
             <div class="form-group col-md-4">
@@ -50,7 +47,7 @@
               <input class="form-control" type="text" formControlName="receipt" [formControl]="valForm.controls['receipt']"
                 placeholder="Receipt" />
               <span class="text-danger"
-                *ngIf="valForm.controls['receipt'].hasError('pattern')  && (valForm.controls['receipt'].dirty || valForm.controls['receipt'].touched)">This
+                *ngIf="valForm.controls['receipt'].hasError('pattern')  || valForm.controls['receipt'].hasError('required') && (valForm.controls['receipt'].dirty || valForm.controls['receipt'].touched)">This
                 field must contain only digits</span>
             </div>
           </div>
@@ -62,7 +59,7 @@
 
           <div class="form-group">
             <button class="btn btn-success btn-sm mr-1" type="submit">Save</button>            
-            <button class="btn btn-info btn-sm" type="button">New</button>
+            <button class="btn btn-info btn-sm" type="button" (click)="btnNewClick()">New</button>
           </div>
                 
         </form>        

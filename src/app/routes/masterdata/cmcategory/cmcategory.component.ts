@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@a
 import { CustomValidators } from 'ng2-validation';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DecimalPipe, DatePipe } from '@angular/common';
+import { _CMCategory } from './cmcategory';
+const swal = require('sweetalert');
 
 const _clone = (d) => JSON.parse(JSON.stringify(d));
 
@@ -48,37 +50,34 @@ export class CmcategoryComponent implements OnInit {
      { name: 'Reason' }
    ];
 
-
   valForm: FormGroup;
-  blackList = ['bad@email.com', 'some@mail.com', 'wrong@email.co'];
-
-
+  blackList = ['bad@email.com', 'some@mail.com', 'wrong@email.co'];      
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('myTable') tableExp: any;
 
   constructor(private npipe: DecimalPipe, private dpipe: DatePipe, fb: FormBuilder) {    
-    this.fetch((data) => {      
-      // cache our list      
-      this.temp = _clone(data);      
-      this.rows = _clone(data);
-      this.rowsFilter = _clone(data);
-      this.rowsExp = _clone(data);
-      this.rowsSort = _clone(data);
-      this.rowsSel = _clone(data);      
-    });
+
 
     let password = new FormControl('', Validators.required);
     let certainPassword = new FormControl('', CustomValidators.equalTo(password));
     
-
+    // this.fetch((data) => {
+    //   // cache our list      
+    //   this.temp = _clone(data);
+    //   this.rows = _clone(data);
+    //   this.rowsFilter = _clone(data);
+    //   this.rowsExp = _clone(data);
+    //   this.rowsSort = _clone(data);
+    //   this.rowsSel = _clone(data);
+    // });
+    this.LoadCategory()
     // Model Driven validation
     this.valForm = fb.group({
-
       'code': [null, Validators.pattern('^[0-9]+$')],
       'desc': [null, Validators.required],
-      'count': [null, Validators.pattern('^[0-9]+$')],
-      'category': [null, Validators.pattern('^[0-9]+$')],
-      'receipt': [null, Validators.pattern('^[0-9]+$')],
+      'count': [null, [Validators.pattern('^[0-9]+$'),Validators.required]],
+      'category': [null, [Validators.pattern('^[0-9]+$'), Validators.required]],
+      'receipt': [null, [Validators.pattern('^[0-9]+$'), Validators.required]],
       'reason': [],
 
       // 'sometext': [null, Validators.required],
@@ -107,22 +106,22 @@ export class CmcategoryComponent implements OnInit {
       //   confirmPassword: certainPassword
       // })
     });
-
   }
 
   ngOnInit() {
 
   }
 
-  submitForm($ev, value: any) {
-    $ev.preventDefault();
-    for (let c in this.valForm.controls) {
-      this.valForm.controls[c].markAsTouched();
-    }
-    if (this.valForm.valid) {
-      console.log('Valid!');
-    }
-    console.log(value);
+  LoadCategory() {
+    this.fetch((data) => {
+      // cache our list      
+      this.temp = _clone(data);
+      this.rows = _clone(data);
+      this.rowsFilter = _clone(data);
+      this.rowsExp = _clone(data);
+      this.rowsSort = _clone(data);
+      this.rowsSel = _clone(data);
+    });    
   }
 
   minWords(checkValue): ValidatorFn {
@@ -143,7 +142,6 @@ export class CmcategoryComponent implements OnInit {
     });
   }
   
-
   onPage(event) {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
@@ -161,8 +159,7 @@ export class CmcategoryComponent implements OnInit {
   }
 
   fetch(cb) {    
-    const req = new XMLHttpRequest();
-    //req.open('GET', `assets/company.json`);
+    const req = new XMLHttpRequest();   
     req.open('GET', `http://localhost:8080/cmcat`);       
 
     req.onload = () => {      
@@ -178,7 +175,6 @@ export class CmcategoryComponent implements OnInit {
     this.rows = [...this.rows];
     console.log('UPDATED!', this.rows[rowIndex][cell]);
   }
-
 
   updateFilter(event) {    
     var numPipe: PipeTransform; numPipe = this.npipe
@@ -204,19 +200,83 @@ export class CmcategoryComponent implements OnInit {
     this.table.offset = 0;    
   }
   
-  onSelect({ selected }) {
-    console.log(this)
-    console.log(this.selected)
+  onSelect({ selected }) {    
+    const jsonData = this.selected    
+    // console.log(jsonData[0].Code)
+    // this.valForm.setValue['Code'].setValue(jsonData[0].Code)
+    this.valForm.setValue({      
+      'code': jsonData[0].Code,
+      'desc': jsonData[0].Desc,
+      'count': jsonData[0].Cnt,
+      'category': jsonData[0].Category,
+      'receipt': jsonData[0].Rcpt,
+      'reason': jsonData[0].Reason
+    })
+
   }
 
   onActivate(event) {
     console.log('Activate Event', event);
   }
   
-  getRowClass = (row) => {    
-    return {
-      'row-color1': row.Cnt
-    };
+  getRowClass = (row) => {
+    // return {
+    //   'row-color1': row.Cnt == 1
+    // };
+  }
+
+  btnNewClick() {
+    this.valForm.reset()
+  }
+  
+  submitForm($ev, value: any) {
+    $ev.preventDefault();
+    for (let c in this.valForm.controls) {
+      this.valForm.controls[c].markAsTouched();
+    }
+    if (this.valForm.valid) {
+      swal({
+        title: 'Post Category?',
+        text: 'This is irreversible',
+        icon: 'warning',
+        buttons: {
+          cancel: {
+            text: 'Cancel',
+            value: null,
+            visible: true,
+            className: "",
+            closeModal: false
+          },
+          confirm: {
+            text: 'Yes',
+            value: true,
+            visible: true,
+            className: "bg-success",
+            closeModal: false
+          }
+        }
+      }).then((isConfirm) => {
+        if (isConfirm) {          
+          // console.log(this.valForm.value)
+          const req = new XMLHttpRequest();
+          req.open('POST', `http://localhost:8080/cmcatpost`, /* async = */ false);
+          req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");          
+          req.send(JSON.stringify(this.valForm.value));
+
+          console.log(req.status)
+          if (req.status == 200) {
+            swal('Posting Success', 'success');
+            this.LoadCategory()
+          } else {
+            swal('Cancelled', req.responseText, 'error');
+          }
+          
+
+        } else {
+          swal('Cancelled', 'Posting Cancelled', 'error');
+        }
+      });
+    }    
   }
 
 }
