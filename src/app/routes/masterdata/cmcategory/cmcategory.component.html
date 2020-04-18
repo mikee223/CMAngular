@@ -10,37 +10,54 @@
     <div class="card card-default">
       <div class="card-header">CM Categories</div>
       <div class="card-body">
-        <form role="form">
+        <form [formGroup]="valForm" class="form-validate form-horizontal" (submit)="submitForm($event, valForm.value)" novalidate="">
           <div class="form-group">
             <label>Category Code</label>
-            <input class="form-control" type="text" placeholder="Category Code" />
+            <input class="form-control" type="text" formControlName="code" [formControl]="valForm.controls['code']" placeholder="Category Code"/>
+            <span class="text-danger" *ngIf="valForm.controls['code'].hasError('pattern') && (valForm.controls['code'].dirty || valForm.controls['code'].touched)">This field must contain only digits</span>
+
           </div>
 
           <div class="form-group">
-            <label>Description</label>
-            <input class="form-control" type="text" placeholder="Description" />
+            <label>Description</label>            
+            <input class="form-control" type="text" formControlName="desc" [formControl]="valForm.controls['desc']" placeholder="Description" />
+            <span class="text-danger"
+              *ngIf="valForm.controls['desc'].hasError('required') && (valForm.controls['desc'].dirty || valForm.controls['desc'].touched)">This
+              field is required</span>
           </div>
 
           <div class="row">
             <div class="form-group col-md-4">
-              <label>Count</label>
-              <input class="form-control" type="text" placeholder="Count" />
+              <label>Count</label>              
+              <input class="form-control" type="text" formControlName="count" [formControl]="valForm.controls['count']"
+                placeholder="Count" />
+              <span class="text-danger"
+                *ngIf="valForm.controls['count'].hasError('pattern')  && (valForm.controls['count'].dirty || valForm.controls['count'].touched)">This
+                field must contain only digits</span>
             </div>
 
             <div class="form-group col-md-4">
               <label>Category</label>
-              <input class="form-control" type="text" placeholder="Category" />
+              <input class="form-control" type="text" formControlName="category" [formControl]="valForm.controls['category']"
+                placeholder="Category" />
+              <span class="text-danger"
+                *ngIf="valForm.controls['category'].hasError('pattern')  && (valForm.controls['category'].dirty || valForm.controls['category'].touched)">This
+                field must contain only digits</span>
             </div>
 
             <div class="form-group col-md-4">
               <label>Receipt</label>
-              <input class="form-control" type="text" placeholder="Receipt" />
+              <input class="form-control" type="text" formControlName="receipt" [formControl]="valForm.controls['receipt']"
+                placeholder="Receipt" />
+              <span class="text-danger"
+                *ngIf="valForm.controls['receipt'].hasError('pattern')  && (valForm.controls['receipt'].dirty || valForm.controls['receipt'].touched)">This
+                field must contain only digits</span>
             </div>
           </div>
           
           <div class="form-group">
             <label>Default Reason</label>
-            <input class="form-control" type="text" placeholder="Default Reason" />
+            <input class="form-control" type="text" formControlName="reason" placeholder="Default Reason" />
           </div>
 
           <div class="form-group">
@@ -67,17 +84,12 @@
           </div>
         </div>
 
-        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter' (select)='onSelect($event)' [selected]="selected" [selectionType]="'single'">
-          <!-- <ngx-datatable-column name="Name" [width]="300"></ngx-datatable-column>
-          <ngx-datatable-column name="Gender"></ngx-datatable-column>
-          <ngx-datatable-column name="Age"></ngx-datatable-column>
-          <ngx-datatable-column name="Company" [width]="300"></ngx-datatable-column> -->
-
-          <ngx-datatable-column prop="Code" ></ngx-datatable-column>
+        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter' (select)='onSelect($event)' [selected]="selected" [selectionType]="'single'" [rowClass]="getRowClass">          
+          <ngx-datatable-column prop="Code"></ngx-datatable-column>
           <ngx-datatable-column prop="Desc" ></ngx-datatable-column>
-          <ngx-datatable-column prop="Cnt" ></ngx-datatable-column>
+          <ngx-datatable-column prop="Cnt" name="Count"></ngx-datatable-column>
           <ngx-datatable-column prop="Category" ></ngx-datatable-column>
-          <ngx-datatable-column prop="Rcpt"></ngx-datatable-column>
+          <ngx-datatable-column prop="Rcpt" name="Receipt"></ngx-datatable-column>
           <ngx-datatable-column prop="Reason"></ngx-datatable-column>
         </ngx-datatable>
       </div>
