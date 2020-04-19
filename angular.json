@@ -143,5 +143,8 @@
       }
     }
   },
-  "defaultProject": "ng2angle"
+  "defaultProject": "ng2angle",
+  "cli": {
+    "analytics": false
+  }
 }
