@@ -160,7 +160,7 @@ export class CmcategoryComponent implements OnInit {
 
   fetch(cb) {    
     const req = new XMLHttpRequest();   
-    req.open('GET', `http://localhost:8080/cmcat`);       
+    req.open('GET', `http://192.168.1.165:8080/cmcat`);       
 
     req.onload = () => {      
       cb(JSON.parse(req.response));
@@ -226,7 +226,8 @@ export class CmcategoryComponent implements OnInit {
   }
 
   btnNewClick() {
-    this.valForm.reset()
+    this.valForm.reset()    
+    // this.valForm.get('cardNumber')).nativeElement.focus();
   }
   
   submitForm($ev, value: any) {
@@ -259,7 +260,8 @@ export class CmcategoryComponent implements OnInit {
         if (isConfirm) {          
           // console.log(this.valForm.value)
           const req = new XMLHttpRequest();
-          req.open('POST', `http://localhost:8080/cmcatpost`, /* async = */ false);
+          // req.open('POST', `http://localhost:8080/cmcatpost`, /* async = */ false);          
+          req.open('POST', `http://192.168.1.165:8080/api/cmcatpost`, /* async = */ false);
           req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");          
           req.send(JSON.stringify(this.valForm.value));
 
