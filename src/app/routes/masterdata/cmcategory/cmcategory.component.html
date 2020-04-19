@@ -14,7 +14,7 @@
           <div class="form-group">
             <label>Category Code</label>
             <input class="form-control" type="text" formControlName="code" [formControl]="valForm.controls['code']" placeholder="Category Code"/>
-            <span class="text-danger" *ngIf="valForm.controls['code'].hasError('pattern') && (valForm.controls['code'].dirty || valForm.controls['code'].touched)">This field must contain only digits</span>
+            <span class="text-danger" *ngIf="valForm.controls['code'].hasError('pattern') && (valForm.controls['code'].dirty || valForm.controls['code'].touched)">Numbers only</span>
 
           </div>
 
@@ -47,8 +47,7 @@
               <input class="form-control" type="text" formControlName="receipt" [formControl]="valForm.controls['receipt']"
                 placeholder="Receipt" />
               <span class="text-danger"
-                *ngIf="valForm.controls['receipt'].hasError('pattern')  || valForm.controls['receipt'].hasError('required') && (valForm.controls['receipt'].dirty || valForm.controls['receipt'].touched)">This
-                field must contain only digits</span>
+                *ngIf="valForm.controls['receipt'].hasError('pattern')  || valForm.controls['receipt'].hasError('required') && (valForm.controls['receipt'].dirty || valForm.controls['receipt'].touched)">Numbers only (required)</span>
             </div>
           </div>
           

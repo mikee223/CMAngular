@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, PipeTransform  } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, PipeTransform, ElementRef  } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
@@ -55,7 +55,7 @@ export class CmcategoryComponent implements OnInit {
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('myTable') tableExp: any;
 
-  constructor(private npipe: DecimalPipe, private dpipe: DatePipe, fb: FormBuilder) {    
+  constructor(private npipe: DecimalPipe, private dpipe: DatePipe, fb: FormBuilder, private el: ElementRef) {    
 
 
     let password = new FormControl('', Validators.required);
@@ -225,9 +225,10 @@ export class CmcategoryComponent implements OnInit {
     // };
   }
 
-  btnNewClick() {
-    this.valForm.reset()    
-    // this.valForm.get('cardNumber')).nativeElement.focus();
+  btnNewClick() {    
+    this.valForm.reset()        
+    const obj = this.el.nativeElement.querySelector('[formcontrolname="desc"]')    
+    obj.focus();
   }
   
   submitForm($ev, value: any) {
