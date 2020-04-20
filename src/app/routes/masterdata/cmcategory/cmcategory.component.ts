@@ -239,21 +239,21 @@ export class CmcategoryComponent implements OnInit {
     if (this.valForm.valid) {
       swal({
         title: 'Post Category?',
-        text: 'This is irreversible',
+        text: '',
         icon: 'warning',
-        buttons: {
-          cancel: {
-            text: 'Cancel',
-            value: null,
-            visible: true,
-            className: "",
-            closeModal: false
-          },
+        buttons: {          
           confirm: {
             text: 'Yes',
             value: true,
             visible: true,
             className: "bg-success",
+            closeModal: false
+          },
+          cancel: {
+            text: 'Cancel',
+            value: null,
+            visible: true,
+            className: "bg-danger",
             closeModal: false
           }
         }
@@ -269,6 +269,8 @@ export class CmcategoryComponent implements OnInit {
           console.log(req.status)
           if (req.status == 200) {
             swal('Posting Success', 'success');
+            swal("Posted Successfully!", "", "success");
+
             this.LoadCategory()
           } else {
             swal('Cancelled', req.responseText, 'error');
