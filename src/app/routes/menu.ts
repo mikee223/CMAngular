@@ -1,13 +1,12 @@
+const headingMain = {
+    text: 'Main Navigation',
+    heading: true
+};
 
 const Home = {
     text: 'Home',
     link: '/home',
     icon: 'icon-home'
-};
-
-const headingMain = {
-    text: 'Main Navigation',
-    heading: true
 };
 
 const MasterData = {

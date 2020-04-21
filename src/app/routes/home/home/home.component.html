@@ -7,24 +7,29 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card card-default">
-            <div class="card-header">Category List</div>
-    
+            <div class="card-header">CM Done today</div>    
             <div class="card-body">
-
                 <div class="row mb-4">
                     <div class="col-lg-4">
-                        <input type='text' class="form-control" placeholder='Type to filter the name column...'
-                            (keyup)='updateFilter($event)' />
+                        <input type='text' class="form-control" placeholder='Search'
+                            (keyup)='FilterDBCount($event)' />
                     </div>
                 </div>
-    
-                <ngx-datatable #tableCount class='bootstrap no-detail-row' [columns]="columnsCount" [columnMode]="'force'"
-                    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter' [selected]="selected" [selectionType]="'single'">
-                    <ngx-datatable-column prop="Employee"></ngx-datatable-column>                                        
-                    <ngx-datatable-column prop="Count"></ngx-datatable-column>
-                    <ngx-datatable-column prop="Percentage"></ngx-datatable-column>
-                </ngx-datatable>
 
+                <ngx-datatable #tableCount class='bootstrap no-detail-row' 
+                    [columns]="columnsCount" 
+                    [columnMode]="'force'"
+                    [footerHeight]="50" 
+                    [rowHeight]="'auto'" 
+                    [limit]="10" 
+                    [rows]='rowsFilter' 
+                    [selected]="selected" 
+                    [selectionType]="'single'">
+                    <ngx-datatable-column prop="EmpCode"></ngx-datatable-column>                                        
+                    <ngx-datatable-column prop="EmpName"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Done"></ngx-datatable-column>
+                </ngx-datatable>
+                
             </div>
     
         </div>
