@@ -14,19 +14,28 @@ const _clone = (d) => JSON.parse(JSON.stringify(d));
 })
 
 export class HomeComponent implements OnInit {
-    @ViewChild(DatatableComponent) tableCount: DatatableComponent;
+    @ViewChild(DatatableComponent) tableCount : DatatableComponent;
+    @ViewChild(DatatableComponent) tableReport: DatatableComponent;
+    @ViewChild(DatatableComponent) tableCategory: DatatableComponent;
+    
 
-    editing = {};
-    rows = [];
-    rowsFilter = [];
+
+    //unknown usage
+    editing = {};    
     rowsExp = [];
-    rowsSort = [];
-    temp = [];
+    rowsSort = [];    
     expanded: any = {};
     timeout: any;
-
     rowsSel = [];
-    selected = [];
+             
+    constructor(private npipe: DecimalPipe, private dpipe: DatePipe) { 
+        this.LoadDBCount()
+        this.LoadDBReport()
+        this.LoadDBCategory()
+    }
+
+    ngOnInit() {
+    }
 
     columnsCount = [
         { prop: 'name' },
@@ -35,17 +44,47 @@ export class HomeComponent implements OnInit {
         { name: 'Percentage' }
     ];
 
-    constructor(private npipe: DecimalPipe, private dpipe: DatePipe) { 
-        this.LoadDBCount()
-    }
+    columnsReport = [
+        { prop: 'name' },
+        { name: 'Dt' },
+        { name: 'Pending' },
+        { name: 'New' },
+        { name: 'Done' }
+    ];
 
-    ngOnInit() {
-    }
+    columnsCategory = [
+        { prop: 'name' },
+        { name: 'Category' },
+        { name: 'Cnt' },
+        { name: 'Perc' }        
+    ];
 
-    fetch(cb) {
+    //table count
+    tableCount_temp = [];
+    tableCount_rowsFilter = [];
+    tableCount_rows = [];
+    tableCount_selected = [];
+
+    //table report
+    tableReport_temp = [];
+    tableReport_rowsFilter = [];
+    tableReport_rows = [];
+    tableReport_selected = [];
+
+    //table category
+    tableCategory_temp = [];
+    tableCategory_rowsFilter = [];
+    tableCategory_rows = [];
+    tableCategory_selected = [];
+    
+
+    //api variable
+    apiurl = "";
+    
+    //api loader (GET ONLY)
+    api_loader(cb) {
         const req = new XMLHttpRequest();
-        req.open('GET', `http://192.168.1.165:8080/cmdbcount`);
-
+        req.open('GET', this.apiurl, false);
         req.onload = () => {
             cb(JSON.parse(req.response));
         };
@@ -54,29 +93,86 @@ export class HomeComponent implements OnInit {
 
     //load
     LoadDBCount() {
-        this.fetch((data) => {
+        this.apiurl = `http://192.168.1.165:8080/cmdbcount`
+        this.api_loader((data) => {
             // cache our list      
-            this.temp = _clone(data);
-            this.rows = _clone(data);
-            this.rowsFilter = _clone(data);
-            this.rowsExp = _clone(data);
-            this.rowsSort = _clone(data);
-            this.rowsSel = _clone(data);
+            this.tableCount_temp = _clone(data);
+            this.tableCount_rows = _clone(data);            
+            this.tableCount_rowsFilter = _clone(data);
+            // this.rowsExp = _clone(data);
+            // this.rowsSort = _clone(data);
+            // this.rowsSel = _clone(data);
         });
     }    
 
+    LoadDBReport() {
+        this.apiurl = `http://192.168.1.165:8080/cmdbreport`
+        this.api_loader((data) => {
+            // cache our list      
+            this.tableReport_temp = _clone(data);
+            this.tableReport_rows = _clone(data);
+            this.tableReport_rowsFilter = _clone(data);
+            // this.rowsExp = _clone(data);
+            // this.rowsSort = _clone(data);
+            // this.rowsSel = _clone(data);
+        });
+    }
+
+    LoadDBCategory() {
+        this.apiurl = `http://192.168.1.165:8080/cmdbcategory`
+        this.api_loader((data) => {
+            // cache our list      
+            this.tableCategory_temp = _clone(data);
+            this.tableCategory_rows = _clone(data);
+            this.tableCategory_rowsFilter = _clone(data);
+        });
+    }
+
+    //filter (search)
     FilterDBCount(event) {
         var numPipe: PipeTransform; numPipe = this.npipe
         var datePipe: PipeTransform; datePipe = this.dpipe
         const val = event.target.value.toLowerCase();
         // filter our data
-        const temp = this.temp.filter(function (d) {            
+        const temp = this.tableCount_temp.filter(function (d) {            
             return d.EmpCode.toLowerCase().indexOf(val) !== -1 || !val
                 || d.EmpName.toLowerCase().indexOf(val) !== -1 || !val
-                || numPipe.transform(d.Done) == val || !val            
+                || numPipe.transform(d.Done) == val || !val
         });        
-        this.rowsFilter = temp;        
+        this.tableCount_rowsFilter = temp;        
         this.tableCount.offset = 0;
+    }
+
+    FilterDBReport(event) {
+        var numPipe: PipeTransform; numPipe = this.npipe
+        var datePipe: PipeTransform; datePipe = this.dpipe
+        const val = event.target.value.toLowerCase();
+        // filter our data
+
+        const temp = this.tableReport_temp.filter(function (d) {            
+            return datePipe.transform(d.Dt,'MM/dd/yyyy') == val || !val ||
+                   numPipe.transform(d.Pending) == val || !val ||
+                   numPipe.transform(d.New) == val || !val ||
+                   numPipe.transform(d.Done) == val || !val
+        });
+        this.tableReport_rowsFilter = temp;
+        this.tableReport.offset = 0;
+    }
+
+    FilterDBCategory(event) {
+        var numPipe: PipeTransform; numPipe = this.npipe
+        var datePipe: PipeTransform; datePipe = this.dpipe
+        const val = event.target.value.toLowerCase();
+        // filter our data
+
+        const temp = this.tableCount_temp.filter(function (d) {
+            return d.Category.toLowerCase().indexOf(val) !== -1 || !val                
+                || numPipe.transform(d.Cnt) == val || !val
+                || numPipe.transform(d.Perc) == val || !val
+        });
+
+        this.tableCategory_rowsFilter = temp;
+        this.tableCategory.offset = 0;
     }
 
 
