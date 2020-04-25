@@ -17,7 +17,7 @@ const routes: Routes = [
     imports: [
         SharedModule,
         RouterModule.forChild(routes),
-        //Ng2TableModule,
+        // Ng2TableModule,
         NgxDatatableModule,
         ExportAsModule
     ],

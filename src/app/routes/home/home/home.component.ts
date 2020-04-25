@@ -16,27 +16,26 @@ const _clone = (d) => JSON.parse(JSON.stringify(d));
 
 
 export class HomeComponent implements OnInit {
-          
     @ViewChild(DatatableComponent) tableCount : DatatableComponent;
     @ViewChild(DatatableComponent) tableReport: DatatableComponent;
-    @ViewChild(DatatableComponent) tableCategory: DatatableComponent;  
+    @ViewChild(DatatableComponent) tableCategory: DatatableComponent;
 
-    //unknown usage
-    editing = {};    
+    // unknown usage
+    editing = {};
     rowsExp = [];
-    rowsSort = [];    
+    rowsSort = [];
     expanded: any = {};
     timeout: any;
     rowsSel = [];
-             
-    
+
     constructor(private npipe: DecimalPipe, private dpipe: DatePipe, private exportAsService: ExportAsService, private el: ElementRef) { 
-        this.LoadDBCount()
-        this.LoadDBReport()
-        this.LoadDBCategory()
+        
     }
-         
-    ngOnInit() {                
+
+    ngOnInit() {
+        this.LoadDBCount();
+        this.LoadDBReport();
+        this.LoadDBCategory();
     }
 
     columnsCount = [
@@ -191,11 +190,12 @@ export class HomeComponent implements OnInit {
     };
 
     exportAs(type: SupportedExtensions, opt?: string) {
-        this.config.type = type;
+        
+        this.config.type = type;        
         if (opt) {
             this.config.options.jsPDF.orientation = opt;
-        }
-        this.exportAsService.save(this.config, 'File').subscribe(() => {
+        }        
+        this.exportAsService.save(this.config, 'File').subscribe(() => {            
             // save started            
         });   
     }
