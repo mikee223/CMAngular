@@ -9,27 +9,27 @@
         <div class="card card-default">
             <div class="card-header">CM Done today</div>    
             <div class="card-body">
+
                 <div class="row mb-4">
                     <div class="col-lg-4">
                         <input type='text' class="form-control" placeholder='Search'
                             (keyup)='FilterDBCount($event)' />
                     </div>
+
+                    <div>
+                        <button (click)="DownloadExcel()">Download Excel</button>
+                    </div>
                 </div>
 
-                <ngx-datatable #tableCount class='bootstrap no-detail-row' 
-                    [columns]="columnsCount" 
-                    [columnMode]="'force'"
-                    [footerHeight]="50" 
-                    [rowHeight]="'auto'" 
-                    [limit]="10" 
-                    [rows]='tableCount_rowsFilter' 
-                    [selected]="tableCount_selected" 
-                    [selectionType]="'single'">
-                    <ngx-datatable-column prop="EmpCode"></ngx-datatable-column>                                        
+
+                <ngx-datatable #tableCount class='bootstrap no-detail-row' [columns]="columnsCount" [columnMode]="'force'"
+                    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='tableCount_rowsFilter'
+                    [selected]="tableCount_selected" [selectionType]="'single'">
+                    <ngx-datatable-column prop="EmpCode"></ngx-datatable-column>
                     <ngx-datatable-column prop="EmpName"></ngx-datatable-column>
                     <ngx-datatable-column prop="Done"></ngx-datatable-column>
                 </ngx-datatable>
-                
+              
             </div>
     
         </div>
@@ -90,5 +90,31 @@
             </div>
     
         </div>
+    </div>
+
+
+    <div>
+        <table id="element">
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Population</th>
+                    <th>Date</th>
+                    <th>Age</th>
+                    <th>REMARKS</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                <tr>
+                    <td>United States</td>
+                    <td>317746000</td>
+                    <td>March 24 2014</td>
+                    <td>4.44</td>
+                    <td>Remarks 3</td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="exportAs('xls')">export as Ms-Excel</button>
     </div>
 </div>

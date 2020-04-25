@@ -227,7 +227,7 @@ export class CmcategoryComponent implements OnInit {
 
   btnNewClick() {    
     this.valForm.reset()        
-    const obj = this.el.nativeElement.querySelector('[formcontrolname="desc"]')    
+    const obj = this.el.nativeElement.querySelector('[formcontrolname="desc"]')
     obj.focus();
   }
   

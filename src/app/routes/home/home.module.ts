@@ -3,8 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedModule } from '../../shared/shared.module';
+import { ExportAsModule } from 'ngx-export-as'
 
 import { HomeComponent } from './home/home.component';
+
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -16,7 +18,8 @@ const routes: Routes = [
         SharedModule,
         RouterModule.forChild(routes),
         Ng2TableModule,
-        NgxDatatableModule
+        NgxDatatableModule,
+        ExportAsModule
     ],
     declarations: [HomeComponent],
     exports: [

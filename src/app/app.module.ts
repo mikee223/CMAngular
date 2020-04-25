@@ -11,6 +11,7 @@ import { CoreModule } from './core/core.module';
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
 import { RoutesModule } from './routes/routes.module';
+import { ExportAsModule } from 'ngx-export-as'
 
 
 import { DecimalPipe, DatePipe } from '@angular/common';
@@ -31,6 +32,7 @@ export function createTranslateLoader(http: HttpClient) {
         LayoutModule,
         SharedModule.forRoot(),
         RoutesModule,
+        ExportAsModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

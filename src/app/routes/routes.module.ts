@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { TranslatorService } from '../core/translator/translator.service';
 import { MenuService } from '../core/menu/menu.service';
 import { SharedModule } from '../shared/shared.module';
+import { ExportAsModule } from 'ngx-export-as'
 
 
 import { menu } from './menu';
@@ -12,7 +13,8 @@ import { routes } from './routes';
 @NgModule({
     imports: [
         SharedModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes),
+        ExportAsModule
     ],
     declarations: [],
     exports: [
