@@ -37,4 +37,5 @@ import { SharedModule } from '../shared/shared.module';
         FooterComponent
     ]
 })
-export class LayoutModule { }
+export class LayoutModule {     
+}

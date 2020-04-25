@@ -6,7 +6,7 @@ export class MenuService {
     menuItems: Array<any>;
 
     constructor() {
-        this.menuItems = [];
+        this.menuItems = [];        
     }
 
     addMenu(items: Array<{

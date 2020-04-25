@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
         this.LoadDBCategory()
     }
          
-    ngOnInit() {        
+    ngOnInit() {                
     }
 
     columnsCount = [
@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit {
         }
     };
 
-    exportAs(type: SupportedExtensions, opt?: string) {        
+    exportAs(type: SupportedExtensions, opt?: string) {
         this.config.type = type;
         if (opt) {
             this.config.options.jsPDF.orientation = opt;

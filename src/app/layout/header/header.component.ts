@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 const screenfull = require('screenfull');
 
 import { UserblockService } from '../sidebar/userblock/userblock.service';
@@ -10,7 +10,7 @@ import { MenuService } from '../../core/menu/menu.service';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
 
     navCollapsed = true; // for horizontal layout
     menuItems = []; // for horizontal layout
@@ -18,15 +18,15 @@ export class HeaderComponent implements OnInit {
     isNavSearchVisible: boolean;
     @ViewChild('fsbutton') fsbutton;  // the fullscreen button
 
-    constructor(public menu: MenuService, public userblockService: UserblockService, public settings: SettingsService) {
+    constructor(public menu: MenuService, public userblockService: UserblockService, public settings: SettingsService, private cdr: ChangeDetectorRef) {
 
         // show only a few items on demo
         this.menuItems = menu.getMenu().slice(0, 4); // for horizontal layout
 
     }
 
-    ngOnInit() {
-        this.isNavSearchVisible = false;
+    ngAfterViewInit(): void {
+         this.isNavSearchVisible = false;
 
         var ua = window.navigator.userAgent;
         if (ua.indexOf("MSIE ") > 0 || !!ua.match(/Trident.*rv\:11\./)) { // Not supported under IE
@@ -39,7 +39,26 @@ export class HeaderComponent implements OnInit {
             if (el)
                 el.className = screenfull.isFullscreen ? 'fa fa-compress' : 'fa fa-expand';
         });
+        this.cdr.detectChanges();
     }
+
+    ngOnInit() {
+        // this.isNavSearchVisible = false;
+
+        // var ua = window.navigator.userAgent;
+        // if (ua.indexOf("MSIE ") > 0 || !!ua.match(/Trident.*rv\:11\./)) { // Not supported under IE
+        //     this.fsbutton.nativeElement.style.display = 'none';
+        // }
+
+        // // Switch fullscreen icon indicator
+        // console.log(this.fsbutton.nativeElement.firstElementChild)
+        // const el = this.fsbutton.nativeElement.firstElementChild;
+        // screenfull.on('change', () => {
+        //     if (el)
+        //         el.className = screenfull.isFullscreen ? 'fa fa-compress' : 'fa fa-expand';
+        // });
+    }
+
 
     toggleUserBlock(event) {
         event.preventDefault();

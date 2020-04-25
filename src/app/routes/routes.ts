@@ -13,6 +13,5 @@ export const routes = [
     },
 
     // Not found
-    { path: '**', redirectTo: 'home' }
-
+    { path: '**', redirectTo: 'home' }        
 ];

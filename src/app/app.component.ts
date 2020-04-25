@@ -1,5 +1,4 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-
 import { SettingsService } from './core/settings/settings.service';
 
 @Component({
@@ -7,8 +6,7 @@ import { SettingsService } from './core/settings/settings.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-
+export class AppComponent implements OnInit {    
     @HostBinding('class.layout-fixed') get isFixed() { return this.settings.getLayoutSetting('isFixed'); };
     @HostBinding('class.aside-collapsed') get isCollapsed() { return this.settings.getLayoutSetting('isCollapsed'); };
     @HostBinding('class.layout-boxed') get isBoxed() { return this.settings.getLayoutSetting('isBoxed'); };
@@ -20,11 +18,12 @@ export class AppComponent implements OnInit {
     @HostBinding('class.aside-toggled') get asideToggled() { return this.settings.getLayoutSetting('asideToggled'); };
     @HostBinding('class.aside-collapsed-text') get isCollapsedText() { return this.settings.getLayoutSetting('isCollapsedText'); };
 
-    constructor(public settings: SettingsService) { }
+    constructor(public settings: SettingsService) {         
+    }
 
-    ngOnInit() {
-        document.addEventListener('click', e => {
-            const target = e.target as HTMLElement;
+    ngOnInit() {        
+        document.addEventListener('click', e => {            
+            const target = e.target as HTMLElement;            
             if (target.tagName === 'A') e.preventDefault();
         })
     }

@@ -10,14 +10,14 @@ import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '' }    
 ];
 
 @NgModule({
     imports: [
         SharedModule,
         RouterModule.forChild(routes),
-        Ng2TableModule,
+        //Ng2TableModule,
         NgxDatatableModule,
         ExportAsModule
     ],
@@ -27,4 +27,5 @@ const routes: Routes = [
     ]
 })
 
-export class HomeModule { }
+export class HomeModule {    
+}
