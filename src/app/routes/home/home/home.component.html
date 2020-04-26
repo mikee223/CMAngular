@@ -1,0 +1,149 @@
+<div class="content-heading">
+    <div>Credit Memo
+        <small>Home - Dashboard</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-default">
+            <div class="card-header">CM Done today</div>    
+            <div class="card-body">
+
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <input type='text' class="form-control" placeholder='Search'
+                            (keyup)='FilterDBCount($event)' />
+                    </div>
+
+                    <div>
+                        <!-- <button (click)="DownloadExcel()">Download Excel</button> -->
+                    </div>
+                </div>
+
+
+                <ngx-datatable #tableCount class='bootstrap no-detail-row' [columns]="columnsCount" [columnMode]="'force'"
+                    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='tableCount_rowsFilter'
+                    [selected]="tableCount_selected" [selectionType]="'single'">
+                    <ngx-datatable-column prop="EmpCode"></ngx-datatable-column>
+                    <ngx-datatable-column prop="EmpName"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Done"></ngx-datatable-column>
+                </ngx-datatable>
+              
+            </div>
+    
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="card card-default">
+            <div class="card-header">CM Report (Month)</div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterDBReport($event)' />
+                    </div>
+                </div>
+        
+                <ngx-datatable #tableReport class='bootstrap no-detail-row' [columns]="columnsReport" [columnMode]="'force'"
+                    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='tableReport_rowsFilter' [selected]="tableReport_selected"
+                    [selectionType]="'single'">
+                    <ngx-datatable-column prop="Dt" name="Date">       
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.Dt | date: 'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column prop="Pending"></ngx-datatable-column>
+                    <ngx-datatable-column prop="New"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Done"></ngx-datatable-column>
+                </ngx-datatable>
+        
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card card-default">
+            <div class="card-header">CM Category Percentage</div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterDBCategory($event)' />
+                    </div>
+                </div>
+    
+                <ngx-datatable #tableCategory class='bootstrap no-detail-row' [columns]="columnsCategory"
+                    [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
+                    [rows]='tableCategory_rowsFilter' [selected]="tableCategory_selected" [selectionType]="'single'">
+                    <ngx-datatable-column prop="Category"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Cnt" name="Count"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Perc" name="Percent">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <!-- {{row.Perc | percent:'2.1-2'}} -->
+                            {{row.Perc}}%
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+    
+            </div>
+    
+        </div>
+    </div>
+
+
+    <div>
+        <table id="element">
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Population</th>
+                    <th>Date</th>
+                    <th>Age</th>
+                    <th>REMARKS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>مصر</td>
+                    <td>1363480000</td>
+                    <td>March 24 2014</td>
+                    <td>19.1</td>
+                    <td>₹</td>
+                </tr>
+                <tr>
+                    <td>India</td>
+                    <td>1241900000</td>
+                    <td>March 24 2014</td>
+                    <td>17.4</td>
+                    <td>Remarks 2</td>
+                </tr>
+                <tr>
+                    <td>United States</td>
+                    <td>317746000</td>
+                    <td>March 24 2014</td>
+                    <td>4.44</td>
+                    <td>Remarks 3</td>
+                </tr>
+                <tr>
+                    <td>Indonesia</td>
+                    <td>249866000</td>
+                    <td>July 1 2013</td>
+                    <td>3.49</td>
+                    <td>Remarks 4</td>
+                </tr>
+                <tr>
+                    <td>Brazil</td>
+                    <td>201032714</td>
+                    <td>July 1 2013</td>
+                    <td>2.81</td>
+                    <td>Remarks 5</td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="exportAs('xlsx')">export as Ms-Excel</button>
+    </div>
+
+
+</div>
