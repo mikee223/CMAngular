@@ -230,5 +230,15 @@ export class HomeComponent implements OnInit {
         })
     }
     
+    readExcel(){
+        // var workbook = new Workbook(); 
+        // workbook.xlsx.readFile(filename)
+        //     .then(function() {
+        //         var worksheet = workbook.getWorksheet('');
+        //         worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+        //         console.log("Row " + rowNumber + " = " + JSON.stringify(row.values));
+        //         });
+        //     });
+    }
 
 }
