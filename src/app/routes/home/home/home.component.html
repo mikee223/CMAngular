@@ -15,10 +15,6 @@
                         <input type='text' class="form-control" placeholder='Search'
                             (keyup)='FilterDBCount($event)' />
                     </div>
-
-                    <div>
-                        <!-- <button (click)="DownloadExcel()">Download Excel</button> -->
-                    </div>
                 </div>
 
 
@@ -92,6 +88,7 @@
         </div>
     </div>
 
-
-
+    <div>
+        <button (click)="genExcel()">Click Me</button>
+    </div>
 </div>

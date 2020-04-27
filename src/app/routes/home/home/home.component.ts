@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@a
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { ExportAsService, ExportAsConfig, SupportedExtensions } from 'ngx-export-as';
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
 
 
 const _clone = (d) => JSON.parse(JSON.stringify(d));
@@ -176,39 +178,57 @@ export class HomeComponent implements OnInit {
         this.tableCategory.offset = 0;
     }
 
+   //export file   -- example only
+    genExcel() {
+        var data = this.tableCategory_temp;
+        let workbook = new Workbook();
+        let worksheet = workbook.addWorksheet('Book1');
+        const title = 'Report';
+        let titleRow = worksheet.addRow([title]);
+        titleRow.font = { name: 'Comic Sans MS', family: 4, size: 16, underline: 'double', bold: true }
+        worksheet.addRow([]);
 
-   //export file
-    config: ExportAsConfig = {
-        type: 'pdf',
-        elementIdOrContent: 'element',
-        options: {
-            jsPDF: {
-                orientation: 'landscape'
-            },
-            pdfCallbackFn: this.pdfCallbackFn // to add header and footer
-        }
-    };
+        const header = ["Category", "Count", "Percentage"]
+        let headerRow = worksheet.addRow(header);
 
-    exportAs(type: SupportedExtensions, opt?: string) {
+        headerRow.eachCell((cell, number) => {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFFFFF00' },
+                bgColor: { argb: 'FF0000FF' }
+            }
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+        })
+                
+        data.forEach(d => {            
+            var jsonData = []            
+            jsonData.push(d.Category);
+            jsonData.push(d.Cnt);
+            jsonData.push(d.Perc);
         
-        this.config.type = type;        
-        if (opt) {
-            this.config.options.jsPDF.orientation = opt;
-        }        
-        this.exportAsService.save(this.config, 'File').subscribe(() => {            
-            // save started            
-        });   
-    }
+            let row = worksheet.addRow(jsonData);
+            let category = row.getCell(1)
+            let color = 'FF99FF99';
 
-    pdfCallbackFn(pdf: any) {
-        // example to add page number as footer to every page of pdf
-        const noOfPages = pdf.internal.getNumberOfPages();
-        for (let i = 1; i <= noOfPages; i++) {
-            pdf.setPage(i);
-            pdf.text('Page ' + i + ' of ' + noOfPages, pdf.internal.pageSize.getWidth() - 100, pdf.internal.pageSize.getHeight() - 30);
-        }
-    }
+            // let qty = row.getCell(5);
+            
+            // if (+qty.value < 500) {
+            //     color = 'FF9999'
+            // }
 
+            category.fill = {
+                 type: 'pattern',
+                 pattern: 'solid',
+                 fgColor: { argb: color }
+            }
+        });
+
+        workbook.xlsx.writeBuffer().then((data) => {
+            let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            fs.saveAs(blob, 'Export.xlsx');
+        })
+    }
     
 
 }
