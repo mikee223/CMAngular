@@ -6,6 +6,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { _CMCategory } from './cmcategory';
 const swal = require('sweetalert');
 
+
 const _clone = (d) => JSON.parse(JSON.stringify(d));
 
 
@@ -238,47 +239,52 @@ export class CmcategoryComponent implements OnInit {
     }
     if (this.valForm.valid) {
       swal({
-        title: 'Post Category?',
-        text: '',
-        icon: 'warning',
-        buttons: {          
+        title: "Post Category?",
+        text: "",
+        icon: "warning",
+        buttons: {
           confirm: {
-            text: 'Yes',
+            text: "Yes",
             value: true,
             visible: true,
             className: "bg-success",
-            closeModal: false
+            closeModal: false,
           },
           cancel: {
-            text: 'Cancel',
+            text: "Cancel",
             value: null,
             visible: true,
             className: "bg-danger",
-            closeModal: false
-          }
-        }
+            closeModal: false,
+          },
+        },
       }).then((isConfirm) => {
-        if (isConfirm) {          
+        if (isConfirm) {
           // console.log(this.valForm.value)
           const req = new XMLHttpRequest();
-          // req.open('POST', `http://localhost:8080/cmcatpost`, /* async = */ false);          
-          req.open('POST', `http://192.168.1.165:8080/api/cmcatpost`, /* async = */ false);
-          req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");          
+          // req.open('POST', `http://localhost:8080/cmcatpost`, /* async = */ false);
+          req.open(
+            "POST",
+            `http://192.168.1.165:8080/api/cmcatpost`,
+            /* async = */ false
+          );
+          req.setRequestHeader(
+            "Content-Type",
+            "application/json;charset=UTF-8"
+          );
           req.send(JSON.stringify(this.valForm.value));
 
-          console.log(req.status)
+          console.log(req.status);
           if (req.status == 200) {
-            swal('Posting Success', 'success');
+            swal("Posting Success", "success");
             swal("Posted Successfully!", "", "success");
 
-            this.LoadCategory()
+            this.LoadCategory();
           } else {
-            swal('Cancelled', req.responseText, 'error');
+            swal("Cancelled", req.responseText, "error");
           }
-          
-
         } else {
-          swal('Cancelled', 'Posting Cancelled', 'error');
+          swal("Cancelled", "Posting Cancelled", "error");
         }
       });
     }    

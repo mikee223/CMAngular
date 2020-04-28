@@ -1,0 +1,209 @@
+<div class="content-heading">
+    <div>Credit Memo
+        <small>Create CM Transaction</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">        
+        <div class="card card-default">
+            <div class="card-header">Credit Memo</div>
+            <div class="card-body">                
+                <form [formGroup]="cmForm" class="form-validate form-horizontal" novalidate="">
+                    
+                    <div class="row">
+                        <div class="form-group col-lg-2 pr-1">
+                            <label>LabNo</label>
+                            <input class="form-control" type="text" formControlName="labno" [formControl]="cmForm.controls['labno']"
+                                placeholder="Lab No."/>
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['labno'].hasError('required') && (cmForm.controls['labno'].dirty || cmForm.controls['labno'].touched)">This field is required
+                            </span>                            
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>WhsCode</label>
+
+                            <select class="form-control" formControlName="whscode" [formControl]="cmForm.controls['whscode']" placeholder="WhsCode">
+                                <option *ngFor="let branch of branches" [value]="branch.Code">{{ branch.Blk }}</option>
+                            </select>
+                            
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['whscode'].hasError('required') && (cmForm.controls['whscode'].dirty || cmForm.controls['whscode'].touched)">This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>DocDate</label>
+                            <input class="form-control" type="date" formControlName="docdate" [formControl]="cmForm.controls['docdate']"
+                                placeholder="Document Date" />
+                            <span class="text-danger"
+                                *ngIf="cmForm.get('docdate').hasError('dateValid') || cmForm.controls['docdate'].hasError('required') && (cmForm.controls['docdate'].dirty || cmForm.controls['docdate'].touched)">Valid Date Only
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>DocEntry</label>
+                            <input class="form-control" type="text" formControlName="docentry" [formControl]="cmForm.controls['docentry']"
+                                placeholder="Document Entry" />
+                            <span class="text-danger"
+                                *ngIf=" cmForm.controls['docentry'].hasError('pattern') || cmForm.controls['docentry'].hasError('required') && (cmForm.controls['docentry'].dirty || cmForm.controls['docentry'].touched)">Valid DocEntry Only
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>DocTotal</label>
+                            <input class="form-control" type="text" formControlName="doctotal" [formControl]="cmForm.controls['doctotal']"
+                                placeholder="Document Total" readonly/>
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['doctotal'].hasError('pattern') || cmForm.controls['doctotal'].hasError('required') && (cmForm.controls['doctotal'].dirty)">Valid DocTotal Only
+                            </span>
+                        </div>
+
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Balance</label>
+                            <input class="form-control" type="text" formControlName="balance" [formControl]="cmForm.controls['balance']"
+                                placeholder="Balance" readonly />
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['balance'].hasError('pattern') || cmForm.controls['balance'].hasError('required') && (cmForm.controls['balance'].dirty)">Valid Balance Only
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-group col-lg-2 pr-1">
+                            <label>CardCode</label>
+                            <input class="form-control" type="text" formControlName="cardcode" [formControl]="cmForm.controls['cardcode']" placeholder="Customer Code" readonly/>
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['cardcode'].hasError('required') && (cmForm.controls['cardcode'].touched)"> This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-4 custom-padding">
+                            <label>CardName</label>
+                            <input class="form-control" type="text" formControlName="cardname" [formControl]="cmForm.controls['cardname']"
+                                placeholder="Customer Name"/>
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['cardname'].hasError('required') && (cmForm.controls['cardname'].touched)">This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Credit Memo #</label>
+                            <input class="form-control" type="text" formControlName="creditmemo" [formControl]="cmForm.controls['creditmemo']"
+                                placeholder="Credit Memo #" />
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['creditmemo'].hasError('required') && (cmForm.controls['creditmemo'].dirty || cmForm.controls['creditmemo'].touched)">This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Reference #</label>
+                            <input class="form-control" type="text" formControlName="refno" [formControl]="cmForm.controls['refno']" placeholder="Reference #" />
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['refno'].hasError('required') && (cmForm.controls['refno'].dirty || cmForm.controls['refno'].touched)">This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>TransNum</label>
+                            <input class="form-control" type="text" formControlName="transnum" [formControl]="cmForm.controls['transnum']"
+                                placeholder="Transaction Number" />
+                            <span class="text-danger"
+                                *ngIf="cmForm.controls['transnum'].hasError('required') && (cmForm.controls['transnum'].dirty || cmForm.controls['transnum'].touched)">This field is required
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4 pr-1">
+                            <label>Remarks</label>
+                            <input class="form-control" type="text" formControlName="remarks" [formControl]="cmForm.controls['remarks']"
+                                placeholder="Remarks" />
+                            <span class="text-danger" *ngIf="cmForm.controls['remarks'].hasError('required') && ( cmForm.controls['remarks'].dirty || cmForm.controls['remarks'].touched)"> 
+                                This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>SOA No.</label>
+                            <input class="form-control" type="text" formControlName="soano" [formControl]="cmForm.controls['soano']" placeholder="SOA Number" />
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>SOA Date</label>
+                            <input class="form-control" type="date" formControlName="soadate" [formControl]="cmForm.controls['soadate']" placeholder="SOA Date" />
+                        </div>
+
+                        <div class="form-group col-lg-3 custom-padding">
+                            <label>Category</label>
+
+                            <select class="form-control" formControlName="category" [formControl]="cmForm.controls['category']" placeholder="Category">
+                                <option *ngFor="let category of categories" [value]="category.Cnt">{{ category.Desc }}</option>
+                            </select>
+                                                                                    
+                            <span class="text-danger" *ngIf="cmForm.controls['category'].hasError('required') && ( cmForm.controls['category'].dirty || cmForm.controls['category'].touched)">
+                                This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-1 custom-padding">
+                            <label>Count</label>
+                            <select class="form-control" formControlName="count" [formControl]="cmForm.controls['count']" placeholder="Count">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                            <span class="text-danger" *ngIf="cmForm.controls['count'].hasError('required') && ( cmForm.controls['count'].dirty || cmForm.controls['count'].touched)">
+                                This field is required
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4 pr-1">
+                            <label>Patient</label>
+                            <input class="form-control" type="text" formControlName="patient" [formControl]="cmForm.controls['patient']" placeholder="Patient Name" />
+                            <span class="text-danger" *ngIf="cmForm.controls['patient'].hasError('required') && ( cmForm.controls['patient'].dirty || cmForm.controls['patient'].touched)">
+                                This field is required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Transaction Date</label>
+                            <input class="form-control" type="date" formControlName="transdate" [formControl]="cmForm.controls['transdate']" placeholder="Transaction Date" />
+                            <span class="text-danger" *ngIf="cmForm.get('transdate').hasError('dateValid') || cmForm.controls['transdate'].hasError('required') && (cmForm.controls['transdate'].dirty || cmForm.controls['transdate'].touched)">Valid Date Only
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Payment Mode</label>
+                            <select class="form-control" formControlName="paymode" [formControl]="cmForm.controls['paymode']" placeholder="Payment Mode">
+                                <option *ngFor="let paymode of paymodes" [value]="paymode.Code">{{ paymode.Desc }}</option>
+                            </select>                            
+                            <span class="text-danger" *ngIf="cmForm.controls['paymode'].hasError('required') && ( cmForm.controls['paymode'].dirty || cmForm.controls['paymode'].touched)">
+                                Field required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Patient Type</label>
+
+                            <select class="form-control" formControlName="patienttype" [formControl]="cmForm.controls['patienttype']">
+                                <option *ngFor="let patienttype of patienttypes" [value]="patienttype.Code">{{ patienttype.Desc }}</option>
+                            </select>                            
+                            <span class="text-danger" *ngIf="cmForm.controls['patienttype'].hasError('required') && ( cmForm.controls['patienttype'].dirty || cmForm.controls['patienttype'].touched)">
+                                Field required
+                            </span>
+                        </div>
+
+
+                    </div>
+
+                </form>
+            </div>
+        </div>        
+    </div>
+</div>

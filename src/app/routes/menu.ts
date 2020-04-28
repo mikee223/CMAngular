@@ -21,8 +21,21 @@ const MasterData = {
     ]
 };
 
+const Transactions = {
+  text: "Transactions",
+  link: "/transactions",
+  icon: "icon-grid",
+  submenu: [
+    {
+      text: "Credit Memo",
+      link: "/transactions/credmemo",
+    },
+  ],
+};
+
 export const menu = [
     headingMain,
     Home,
-    MasterData
+    MasterData,
+    Transactions
 ];

@@ -21,9 +21,7 @@
           <div class="form-group">
             <label>Description</label>            
             <input class="form-control" type="text" formControlName="desc" [formControl]="valForm.controls['desc']" placeholder="Description" />
-            <span class="text-danger"
-              *ngIf="valForm.controls['desc'].hasError('required') && (valForm.controls['desc'].dirty || valForm.controls['desc'].touched)">This
-              field is required</span>
+            <span class="text-danger" *ngIf="valForm.controls['desc'].hasError('required') && (valForm.controls['desc'].dirty || valForm.controls['desc'].touched)">This field is required</span>
           </div>
 
           <div class="row">
