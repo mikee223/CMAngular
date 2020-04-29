@@ -22,7 +22,8 @@ export class CredmemoComponent implements OnInit {
   branches = [];
   paymodes = [];
   patienttypes = [];
-
+  salespersons = [];
+  
   dateValid(AC: AbstractControl) {
     if (AC && AC.value && !moment(AC.value, "MM/DD/YYYY", true).isValid()) {
       return { dateVaidator: true };
@@ -37,6 +38,7 @@ export class CredmemoComponent implements OnInit {
     this.LoadBranches();
     this.LoadPaymode();
     this.LoadPatientTypes();
+    this.LoadSalesPersons();
 
 
     //form
@@ -61,16 +63,15 @@ export class CredmemoComponent implements OnInit {
       category: [this.categories[0].Code, Validators.required],
       count: [null, [Validators.pattern("^[0-9]+$"), Validators.required]],
       patient: [null, Validators.required],
-      transdate: [
-        "",
-        Validators.compose([Validators.required, this.dateValid]),
-      ],
+      transdate: ["",Validators.compose([Validators.required, this.dateValid])],
       paymode: [null, Validators.required],
       patienttype: [null, Validators.required],
       dcode: [null, Validators.required],
-      slpcode: [null, Validators.required],
+      salesperson: [null, Validators.required],
       source: [null, Validators.required],
       status: [null, Validators.required],
+      retainlabno: [],
+
 
       // docdate : [null, Validators.required],
       // desc: [null, Validators.required],
@@ -156,5 +157,23 @@ export class CredmemoComponent implements OnInit {
       });
   }
 
-  //load select tion -------------------------------------------------------- >
+  LoadSalesPersons() {
+    this.apiurl = `http://192.168.1.165:8080/cmsalesperson`;
+    this.api_loader((data) => {
+      // cache our list
+      this.salespersons = _clone(data);
+    });
+  }
+
+  //end load select option -------------------------------------------------------- >
+
+  //Functions ------------------------------------------------------------ >
+
+  CategoryCount(){
+    // this.cmForm.setValue()
+    this.cmForm.controls['count'].setValue(this.cmForm.value.category);    
+  }
+
+  //End Functions -------------------------------------------------------- >
+
 }

@@ -140,7 +140,7 @@
                         <div class="form-group col-lg-3 custom-padding">
                             <label>Category</label>
 
-                            <select class="form-control" formControlName="category" [formControl]="cmForm.controls['category']" placeholder="Category">
+                            <select class="form-control" formControlName="category" [formControl]="cmForm.controls['category']" placeholder="Category" (change)="CategoryCount($event)">
                                 <option *ngFor="let category of categories" [value]="category.Cnt">{{ category.Desc }}</option>
                             </select>
                                                                                     
@@ -199,9 +199,53 @@
                             </span>
                         </div>
 
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Sales Person</label>
+                        
+                            <select class="form-control" formControlName="salesperson" [formControl]="cmForm.controls['salesperson']">
+                                <option *ngFor="let salesperson of salespersons" [value]="salesperson.Code">{{ salesperson.Desc }}</option>
+                            </select>
+
+                            <span class="text-danger" *ngIf="cmForm.controls['salesperson'].hasError('required') && ( cmForm.controls['salesperson'].dirty || cmForm.controls['salesperson'].touched)"> Field required
+                            </span>
+                        </div>
 
                     </div>
 
+                    <div class="row align-items-end">
+                        <div class="form-group col-lg-1 pr-1">
+                            <label>Source</label>
+                            <input class="form-control" type="text" formControlName="source" [formControl]="cmForm.controls['source']" placeholder="Source" />
+                            <span class="text-danger" *ngIf="cmForm.controls['source'].hasError('required') && ( cmForm.controls['source'].dirty || cmForm.controls['source'].touched)">
+                                Field required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-1 custom-padding">
+                            <label>Doctor Code</label>
+                            <input class="form-control" type="text" formControlName="dcode" [formControl]="cmForm.controls['dcode']" placeholder="Doc Code" />
+                            <span class="text-danger" *ngIf="cmForm.controls['dcode'].hasError('required') && ( cmForm.controls['dcode'].dirty || cmForm.controls['dcode'].touched)">
+                                Field required
+                            </span>
+                        </div>
+
+                        <div class="form-group col-lg-2 custom-padding">
+                            <label>Retained LabNo</label>
+                            <input class="form-control" type="text" formControlName="retainlabno" [formControl]="cmForm.controls['retainlabno']" placeholder="Retained LabNo"/>                            
+                        </div>
+                        
+                        <div class="form-group col-lg-2 custom-padding">                            
+                            <label class="checkbox c-checkbox">
+                                <input type="checkbox" value="" />
+                                <span class="fa fa-check"></span>Open CM
+                            </label>                                                                        
+                            <span class="custom-padding"></span>
+                            <button class="fas fa-save btn btn-outline-success btn-sm" type="submit"> Post CM</button>
+                                                                                                                          
+                        </div>                    
+                    </div>
+
+                    
                 </form>
             </div>
         </div>        

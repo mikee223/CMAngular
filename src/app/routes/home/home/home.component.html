@@ -29,8 +29,33 @@
             </div>
     
         </div>
-    </div>
 
+        <div class="card card-default">
+            <div class="card-header">CM Category Percentage</div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterDBCategory($event)' />
+                    </div>
+                </div>
+        
+                <ngx-datatable #tableCategory class='bootstrap no-detail-row' [columns]="columnsCategory" [columnMode]="'force'"
+                    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='tableCategory_rowsFilter'
+                    [selected]="tableCategory_selected" [selectionType]="'single'">
+                    <ngx-datatable-column prop="Category"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Cnt" name="Count"></ngx-datatable-column>
+                    <ngx-datatable-column prop="Perc" name="Percent">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <!-- {{row.Perc | percent:'2.1-2'}} -->
+                            {{row.Perc}}%
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+        
+            </div>
+        
+        </div>
+    </div>
 
     <div class="col-md-6">
         <div class="card card-default">
@@ -60,39 +85,11 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="card card-default">
-            <div class="card-header">CM Category Percentage</div>
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-lg-4">
-                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterDBCategory($event)' />
-                    </div>
-                </div>
-    
-                <ngx-datatable #tableCategory class='bootstrap no-detail-row' [columns]="columnsCategory"
-                    [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"
-                    [rows]='tableCategory_rowsFilter' [selected]="tableCategory_selected" [selectionType]="'single'">
-                    <ngx-datatable-column prop="Category"></ngx-datatable-column>
-                    <ngx-datatable-column prop="Cnt" name="Count"></ngx-datatable-column>
-                    <ngx-datatable-column prop="Perc" name="Percent">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            <!-- {{row.Perc | percent:'2.1-2'}} -->
-                            {{row.Perc}}%
-                        </ng-template>
-                    </ngx-datatable-column>
-                </ngx-datatable>
-    
-            </div>
-    
-        </div>
-    </div>
-
-    <div>
+    <!-- <div>
         <button (click)="genExcel()">Click Me</button>
 
         <button (click)="readExcel()">Click Me 2</button>
 
         <input #thisFile type="file">        
-    </div>
+    </div> -->
 </div>

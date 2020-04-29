@@ -24,7 +24,7 @@ const MasterData = {
 const Transactions = {
   text: "Transactions",
   link: "/transactions",
-  icon: "icon-grid",
+  icon: "fas fa-columns",
   submenu: [
     {
       text: "Credit Memo",
