@@ -15,6 +15,8 @@ const _clone = (d) => JSON.parse(JSON.stringify(d));
   encapsulation: ViewEncapsulation.None,
 })
 export class CredmemoComponent implements OnInit {
+  @ViewChild(DatatableComponent) tableCM: DatatableComponent;
+
   cmForm: FormGroup;
 
   //select option variable
@@ -24,6 +26,25 @@ export class CredmemoComponent implements OnInit {
   patienttypes = [];
   salespersons = [];
   
+  columnsCM = [
+    { prop: "name" },
+    { name: "Code" },
+    { name: "Desc" },
+    { name: "Qty" },
+    { name: "Amount" },
+    { name: "Disc" },
+    { name: "Total" },
+    { name: "AdjType" },
+    { name: "PriceLvl" },
+    { name: "PackageNo" }
+  ];
+
+  //table cm
+  tableCM_temp = [];
+  tableCM_rowsFilter = [];
+  tableCM_rows = [];
+  tableCM_selected = [];
+
   dateValid(AC: AbstractControl) {
     if (AC && AC.value && !moment(AC.value, "MM/DD/YYYY", true).isValid()) {
       return { dateVaidator: true };
@@ -31,7 +52,7 @@ export class CredmemoComponent implements OnInit {
     return null;
   }
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private npipe: DecimalPipe, private dpipe: DatePipe) {
     
     //load select options
     this.LoadCategories();
@@ -176,4 +197,43 @@ export class CredmemoComponent implements OnInit {
 
   //End Functions -------------------------------------------------------- >
 
+  //Filters and Load Data
+
+  LoadCMTable() {
+    this.apiurl = `http://192.168.1.165:8080/cmdbcount`;
+    this.api_loader((data) => {
+      // cache our list
+      this.tableCM_temp = _clone(data);
+      this.tableCM_rows = _clone(data);
+      this.tableCM_rowsFilter = _clone(data);
+      // this.rowsExp = _clone(data);
+      // this.rowsSort = _clone(data);
+      // this.rowsSel = _clone(data);
+    });
+  }
+
+  FilterCMTable(event) {
+    var numPipe: PipeTransform;
+    numPipe = this.npipe;
+    var datePipe: PipeTransform;
+    datePipe = this.dpipe;
+    const val = event.target.value.toLowerCase();
+    // filter our data
+    const temp = this.tableCM_temp.filter(function (d) {
+      return (
+        d.EmpCode.toLowerCase().indexOf(val) !== -1 ||
+        !val ||
+        d.EmpName.toLowerCase().indexOf(val) !== -1 ||
+        !val ||
+        numPipe.transform(d.Done) == val ||
+        !val
+      );
+    });
+    this.tableCM_rowsFilter = temp;
+    this.tableCM.offset = 0;
+  }
+
+ 
+
+  //-----
 }
