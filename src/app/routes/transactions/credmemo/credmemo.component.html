@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="form-group col-lg-2 pr-1">
                             <label>LabNo</label>
-                            <input class="form-control" type="text" formControlName="labno" [formControl]="cmForm.controls['labno']"
+                            <input (keydown.f4)="cmlistModal.show()" class="form-control" type="text" formControlName="labno" [formControl]="cmForm.controls['labno']"
                                 placeholder="Lab No."/>
                             <span class="text-danger"
                                 *ngIf="cmForm.controls['labno'].hasError('required') && (cmForm.controls['labno'].dirty || cmForm.controls['labno'].touched)">This field is required
@@ -268,6 +268,86 @@
                         </ngx-datatable>
                     </div>                    
                 </div>
+                
+
+                <!-- LabNo Details Modal -->
+                <div class="modal fade" bsModal #cmlistModal ="bs-modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg custom-width-cmlist">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">LabNo Details</h4>
+                                <button type="button" class="close" aria-label="Close" (click)="cmlistModal.hide()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                            
+                                <div class="row mb-3">
+                                    <div class="col-sm-2 ml-2">
+                                        <label class="text-muted">Status</label>                                        
+                                        <select class="form-control" (change)="LoadCMList($event.target.value)">
+                                            <option value="Open">Open</option>
+                                            <option value="Done">Done/Canceled</option>
+                                            <option value="Reject">Rejected</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            
+                                <div class="row ml-2">
+                                    <div class="table-responsive mr-2">
+                                        <ngx-datatable #tableCMList class='bootstrap no-detail-row' [footerHeight]="50" [rowHeight]="'auto'" [limit]="5" [rows]='tableCMList_rowsFilter'
+                                            [selected]="tableCMList_selected" [scrollbarH]="true" [selectionType]="'single'" [selectAllRowsOnPage]="false" (dblclick)="selectCMList()">                                        
+                                            <!-- <ngx-datatable-column prop="CheckBox" name= '' [headerCheckboxable]="true" [checkboxable] ="true" width="30" >
+                                            </ngx-datatable-column> -->
+                                            <ngx-datatable-column prop="DocEntry" ></ngx-datatable-column>                                            
+                                            <ngx-datatable-column prop="LabNo"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="BaseEntry"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="CardCode"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="CardName"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="DateRec">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.DateRec | date: 'MM/dd/yyyy'}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column prop="WhsCode"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="CMDMNo" name="CM/DM"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="Reason" width="500"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="AdjAmt" [cellClass]="'bolder-amount'">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.AdjAmt | number:'1.2-2'}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column prop="DocTotal" [cellClass]="'bolder-amount'">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.DocTotal | number:'1.2-2'}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column prop="PMode"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="Stat"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="CMApp"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="DocStatus"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="Category"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="EmpName"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="SDAmt"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="BillAppBy"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="BillAppDate">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.DateRec | date: 'MM/dd/yyyy'}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column prop="RetainLabNo"></ngx-datatable-column>
+                                            <ngx-datatable-column prop="DoneBy"></ngx-datatable-column>
+                                        </ngx-datatable>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- LabNo Details Modal -->
 
             </div>
         </div>        

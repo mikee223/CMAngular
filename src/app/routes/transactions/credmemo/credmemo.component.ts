@@ -16,6 +16,7 @@ const _clone = (d) => JSON.parse(JSON.stringify(d));
 })
 export class CredmemoComponent implements OnInit {
   @ViewChild(DatatableComponent) tableCM: DatatableComponent;
+  @ViewChild(DatatableComponent) tableCMList: DatatableComponent;
 
   cmForm: FormGroup;
 
@@ -39,11 +40,21 @@ export class CredmemoComponent implements OnInit {
     { name: "PackageNo" }
   ];
 
+  columnsCMList = [
+    // { prop: "name" },    
+  ];
+
   //table cm
   tableCM_temp = [];
   tableCM_rowsFilter = [];
   tableCM_rows = [];
   tableCM_selected = [];
+
+  //table cmlist
+  tableCMList_temp = [];
+  tableCMList_rowsFilter = [];
+  tableCMList_rows = [];
+  tableCMList_selected = [];
 
   dateValid(AC: AbstractControl) {
     if (AC && AC.value && !moment(AC.value, "MM/DD/YYYY", true).isValid()) {
@@ -60,7 +71,6 @@ export class CredmemoComponent implements OnInit {
     this.LoadPaymode();
     this.LoadPatientTypes();
     this.LoadSalesPersons();
-
 
     //form
     this.cmForm = fb.group({
@@ -135,19 +145,42 @@ export class CredmemoComponent implements OnInit {
 
   //api variable
   apiurl = "";
+  apiSubmit = "";
+  apiParam;
 
   api_loader(cb) {
     const req = new XMLHttpRequest();
-    req.open("GET", this.apiurl, false);
-    req.onload = () => {
-      cb(JSON.parse(req.response));
+    req.open(this.apiSubmit, this.apiurl, false);
+        
+    req.onload = () => {      
+      if (this.apiSubmit == "POST") {
+        var _jsonList = JSON.parse(req.response)        
+        cb(_jsonList[0]);
+      } else {
+        cb(JSON.parse(req.response));
+      }
+      
     };
-    req.send();
+
+    if (this.apiParam == null) {      
+      req.send();
+    } else {
+
+      req.setRequestHeader(
+        "Content-Type",
+        "application/json;charset=UTF-8"
+      );
+      
+      req.send(JSON.stringify(this.apiParam));      
+    }
+    
   }
 
   //load select option -------------------------------------------------------- >
   LoadCategories() {
+    this.apiSubmit = `GET`
     this.apiurl = `http://192.168.1.165:8080/cmcat`;
+    this.apiParam = null
     this.api_loader((data) => {
       // cache our list
       this.categories = _clone(data);
@@ -155,7 +188,9 @@ export class CredmemoComponent implements OnInit {
   }
 
   LoadBranches() {
+    this.apiSubmit = `GET`
     this.apiurl = `http://192.168.1.165:8080/cmbranches`;
+    this.apiParam = null
     this.api_loader((data) => {
       // cache our list
       this.branches = _clone(data);
@@ -163,7 +198,9 @@ export class CredmemoComponent implements OnInit {
   }
 
   LoadPaymode() {
+    this.apiSubmit = `GET`
     this.apiurl = `http://192.168.1.165:8080/cmpaymode`;
+    this.apiParam = null
     this.api_loader((data) => {
       // cache our list
       this.paymodes = _clone(data);
@@ -171,7 +208,10 @@ export class CredmemoComponent implements OnInit {
   }
 
   LoadPatientTypes(){
+    this.apiSubmit = `GET`
       this.apiurl = `http://192.168.1.165:8080/cmpatienttype`;
+      this.apiParam = null
+
       this.api_loader((data) => {
         // cache our list
         this.patienttypes = _clone(data);
@@ -179,7 +219,9 @@ export class CredmemoComponent implements OnInit {
   }
 
   LoadSalesPersons() {
+    this.apiSubmit = `GET`
     this.apiurl = `http://192.168.1.165:8080/cmsalesperson`;
+    this.apiParam = null
     this.api_loader((data) => {
       // cache our list
       this.salespersons = _clone(data);
@@ -195,12 +237,18 @@ export class CredmemoComponent implements OnInit {
     this.cmForm.controls['count'].setValue(this.cmForm.value.category);    
   }
 
+  selectCMList(){
+    console.log()
+  }
+
   //End Functions -------------------------------------------------------- >
 
   //Filters and Load Data
 
   LoadCMTable() {
+    this.apiSubmit = `GET`
     this.apiurl = `http://192.168.1.165:8080/cmdbcount`;
+    this.apiParam = null
     this.api_loader((data) => {
       // cache our list
       this.tableCM_temp = _clone(data);
@@ -232,8 +280,23 @@ export class CredmemoComponent implements OnInit {
     this.tableCM_rowsFilter = temp;
     this.tableCM.offset = 0;
   }
-
- 
-
   //-----
+
+  //Load Modal Details
+  LoadCMList(status){    
+    var _Param = {Stat: status};
+    this.apiSubmit = `POST`
+    this.apiurl = `http://192.168.1.165:8080/sp/cmloadcmlist`;    
+    this.apiParam = _Param    
+
+    this.api_loader((data) => {            
+      // cache our list
+      this.tableCMList_temp = _clone(data);
+      this.tableCMList_rows = _clone(data);
+      this.tableCMList_rowsFilter = _clone(data);
+    });
+  }
+
+  //---------
+
 }

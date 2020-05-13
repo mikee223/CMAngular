@@ -44,10 +44,10 @@ export class HomeComponent implements OnInit {
   }
 
   columnsCount = [
-    { prop: "name" },
-    { name: "Employee" },
-    { name: "Count" },
-    { name: "Percentage" },
+    // { prop: "name" },
+    // { name: "Employee" },
+    // { name: "Count" },
+    // { name: "Percentage" },
   ];
 
   columnsReport = [
@@ -91,7 +91,7 @@ export class HomeComponent implements OnInit {
     const req = new XMLHttpRequest();
     req.open("GET", this.apiurl, false);
     req.onload = () => {
-      cb(JSON.parse(req.response));
+      cb(JSON.parse(req.response));      
     };
     req.send();
   }
@@ -134,7 +134,7 @@ export class HomeComponent implements OnInit {
   }
 
   //filter (search)
-  FilterDBCount(event) {
+  FilterDBCount(event) {    
     var numPipe: PipeTransform;
     numPipe = this.npipe;
     var datePipe: PipeTransform;
