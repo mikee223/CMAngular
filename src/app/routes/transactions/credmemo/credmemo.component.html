@@ -245,10 +245,10 @@
                     </div>                    
                 </form>
 
-                <div class="row">                                   
+                <div class="row align-items-end">
                     <div class="col-lg-2 mb-2 mt-4">
-                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterCMTable($event)' />
-                    </div>                                        
+                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterCMTable($event)'  />
+                    </div>                 
                 </div>
 
                 <div class="row">
@@ -271,7 +271,7 @@
                 
 
                 <!-- LabNo Details Modal -->
-                <div class="modal fade" bsModal #cmlistModal ="bs-modal" tabindex="-1" role="dialog">
+                <div class="modal fade" bsModal #cmlistModal ="bs-modal" (onShown)="LoadCMList(cmlistStatus.value)" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-lg custom-width-cmlist">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -283,15 +283,30 @@
 
                             <div class="modal-body">
                             
-                                <div class="row mb-3">
+                                <div class="row align-items-end mb-3">
                                     <div class="col-sm-2 ml-2">
-                                        <label class="text-muted">Status</label>                                        
-                                        <select class="form-control" (change)="LoadCMList($event.target.value)">
+                                        <label class="text-muted">Status</label>
+                                        <select class="form-control" (change)="LoadCMList($event.target.value)" #cmlistStatus>
                                             <option value="Open">Open</option>
                                             <option value="Done">Done/Canceled</option>
                                             <option value="Reject">Rejected</option>
                                         </select>
                                     </div>
+
+                                    <div class="col-sm-2">
+                                        <label class="text-muted">Search</label>
+                                        <input type='text' class="form-control" placeholder='Search' (keyup)='FilterCMList($event)' #cmlistSearch  />
+                                    </div>
+
+
+                                    <div *ngIf="isLoadingCMList; then LoadingCMList"></div>
+                                    <ng-template #LoadingCMList>
+                                        <div class="ball-beat">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </ng-template>
                                 </div>
                             
                                 <div class="row ml-2">

@@ -165,14 +165,10 @@ export class HomeComponent implements OnInit {
 
     const temp = this.tableReport_temp.filter(function (d) {
       return (
-        datePipe.transform(d.Dt, "MM/dd/yyyy") == val ||
-        !val ||
-        numPipe.transform(d.Pending) == val ||
-        !val ||
-        numPipe.transform(d.New) == val ||
-        !val ||
-        numPipe.transform(d.Done) == val ||
-        !val
+        datePipe.transform(d.Dt, "MM/dd/yyyy") == val || !val ||
+        numPipe.transform(d.Pending) == val || !val ||
+        numPipe.transform(d.New) == val || !val ||
+        numPipe.transform(d.Done) == val || !val
       );
     });
     this.tableReport_rowsFilter = temp;

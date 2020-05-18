@@ -4,6 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import * as moment from 'moment';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 const swal = require('sweetalert');
 
 const _clone = (d) => JSON.parse(JSON.stringify(d));
@@ -56,6 +57,13 @@ export class CredmemoComponent implements OnInit {
   tableCMList_rows = [];
   tableCMList_selected = [];
 
+  //modals    
+  @ViewChild('cmlistModal') cmlistModal: ModalDirective;
+  @ViewChild('cmlistStatus') cmlistStatus: ElementRef;
+  @ViewChild('cmlistSearch') cmlistSearch: ElementRef;
+
+  isLoadingCMList = true
+
   dateValid(AC: AbstractControl) {
     if (AC && AC.value && !moment(AC.value, "MM/DD/YYYY", true).isValid()) {
       return { dateVaidator: true };
@@ -71,7 +79,7 @@ export class CredmemoComponent implements OnInit {
     this.LoadPaymode();
     this.LoadPatientTypes();
     this.LoadSalesPersons();
-
+    
     //form
     this.cmForm = fb.group({
       labno: [null, Validators.required],
@@ -151,7 +159,7 @@ export class CredmemoComponent implements OnInit {
   api_loader(cb) {
     const req = new XMLHttpRequest();
     req.open(this.apiSubmit, this.apiurl, false);
-        
+    
     req.onload = () => {      
       if (this.apiSubmit == "POST") {
         var _jsonList = JSON.parse(req.response)        
@@ -238,7 +246,56 @@ export class CredmemoComponent implements OnInit {
   }
 
   selectCMList(){
-    console.log()
+
+    if (this.cmlistStatus.nativeElement.value =="Open") {
+      const jsonData = this.tableCMList_selected
+      var _docentry = jsonData[0].BaseEntry //Invoice Number
+      var _Param = { DocEntry: _docentry };
+      var datePipe: PipeTransform;
+      datePipe = this.dpipe
+
+      this.apiSubmit = `POST`
+      this.apiurl = `http://192.168.1.165:8080/sp/cmlabdetails`;
+      this.apiParam = _Param
+
+      this.api_loader((data) => {
+        this.cmForm.setValue({
+          'labno': data[0].LabNo,
+          'whscode': data[0].WhsCode,
+          'docdate': datePipe.transform(data[0].DocDate, "yyyy-MM-dd"),
+          'docentry': data[0].DocEntry,
+          'doctotal': data[0].DocTotal,
+          'balance': data[0].Balance,
+          'cardcode': data[0].CardCode,
+          'cardname': data[0].CardName,
+          'creditmemo': jsonData[0].CMDMno,
+          'refno': data[0].RefNo,
+          'transnum': data[0].TransNum,
+          'remarks': jsonData[0].Reason,
+          'soano': data[0].SoaNo,
+          'soadate': datePipe.transform(data[0].SoaDate, "yyyy-MM-dd"),
+          'category': jsonData[0].Category,
+          'count': 0,
+          'patient': data[0].Patient,
+          'transdate': datePipe.transform(data[0].TransDate, "yyyy-MM-dd"),
+          'paymode': data[0].PMode,
+          'patienttype': data[0].PType,
+          'dcode': data[0].DCode,
+          'salesperson': data[0].SlpCode,
+          'source': data[0].Source,
+          'status': data[0].DocStatus,
+          'retainlabno': jsonData[0].RetainLabNo,
+        });
+        this.CategoryCount() //count value
+        this.cmlistModal.hide()
+        this.cmlistSearch.nativeElement.value = '';
+        // this.salespersons = _clone(data);
+      });    
+    } else {
+      swal('Restricted', 'Cannot Select Done,Cancelled and Rejected!', 'error');
+    }
+    
+
   }
 
   //End Functions -------------------------------------------------------- >
@@ -280,22 +337,69 @@ export class CredmemoComponent implements OnInit {
     this.tableCM_rowsFilter = temp;
     this.tableCM.offset = 0;
   }
+
+  FilterCMList(event){
+    var numPipe: PipeTransform;
+    numPipe = this.npipe;
+    var datePipe: PipeTransform;
+    datePipe = this.dpipe;
+    const val = event.target.value.toLowerCase();
+    // filter our data
+    const temp = this.tableCMList_temp.filter(function (d) {
+      return (
+        d.DocEntry == val || !val ||
+        d.LabNo.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.BaseEntry.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.CardCode.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.CardName.toLowerCase().indexOf(val) !== -1 || !val ||
+        datePipe.transform(d.DateRec, "MM/dd/yyyy") == val || !val ||
+        d.WhsCode.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.CMDMno.toLowerCase().indexOf(val) !== -1 || !val ||
+        numPipe.transform(d.AdjAmt,'1.2-2') == val || !val ||
+        numPipe.transform(d.DocTotal, '1.2-2') == val || !val ||
+        d.PMode.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.Stat.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.CMApp.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.DocStatus.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.Category.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.EmpName.toLowerCase().indexOf(val) !== -1 || !val ||
+        numPipe.transform(d.SDAmt, '1.2-2') == val || !val ||
+        d.BillAppBy.toLowerCase().indexOf(val) !== -1 || !val ||
+        datePipe.transform(d.BillAppDate, "MM/dd/yyyy") == val || !val ||
+        d.RetainLabNo.toLowerCase().indexOf(val) !== -1 || !val ||
+        d.DoneBy.toLowerCase().indexOf(val) !== -1 || !val
+      );
+    });
+    this.tableCMList_rowsFilter = temp;
+    this.tableCMList.offset = 0;
+  }
   //-----
 
   //Load Modal Details
   LoadCMList(status){    
-    var _Param = {Stat: status};
-    this.apiSubmit = `POST`
-    this.apiurl = `http://192.168.1.165:8080/sp/cmloadcmlist`;    
-    this.apiParam = _Param    
+    this.isLoadingCMList = true
 
-    this.api_loader((data) => {            
-      // cache our list
-      this.tableCMList_temp = _clone(data);
-      this.tableCMList_rows = _clone(data);
-      this.tableCMList_rowsFilter = _clone(data);
-    });
+    this.tableCMList_temp = null
+    this.tableCMList_rows = null
+    this.tableCMList_rowsFilter = null
+
+    setTimeout(() => {
+      var _Param = { Stat: status };
+      this.apiSubmit = `POST`
+      this.apiurl = `http://192.168.1.165:8080/sp/cmloadcmlist`;
+      this.apiParam = _Param
+
+      this.api_loader((data) => {
+        // cache our list
+        this.tableCMList_temp = _clone(data);
+        this.tableCMList_rows = _clone(data);
+        this.tableCMList_rowsFilter = _clone(data);
+        this.isLoadingCMList = false
+      });              
+    }, 500);
+    
   }
+
 
   //---------
 
