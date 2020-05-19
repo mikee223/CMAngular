@@ -77,7 +77,7 @@
           </div>
         </div>
 
-        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rowsFilter' (select)='onSelect($event)' [selected]="selected" [selectionType]="'single'" [rowClass]="getRowClass">          
+        <ngx-datatable #table class='bootstrap no-detail-row' [columns]="columns" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [limit]="5" [rows]='rowsFilter' (select)='onSelect($event)' [selected]="selected" [selectionType]="'single'" [rowClass]="getRowClass">          
           <ngx-datatable-column prop="Code"></ngx-datatable-column>
           <ngx-datatable-column prop="Desc" ></ngx-datatable-column>
           <ngx-datatable-column prop="Cnt" name="Count"></ngx-datatable-column>
