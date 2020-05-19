@@ -396,7 +396,7 @@ export class CredmemoComponent implements OnInit {
         this.tableCMList_rowsFilter = _clone(data);
         this.isLoadingCMList = false
       });              
-    }, 500);
+    }, 100);
     
   }
 
