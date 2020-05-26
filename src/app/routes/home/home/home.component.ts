@@ -98,12 +98,13 @@ export class HomeComponent implements OnInit {
 
   //load
   LoadDBCount() {
-    this.apiurl = `http://192.168.1.165:8080/cmdbcount`;
+    this.apiurl = `http://localhost:8080/sp/cmdbcount`;
     this.api_loader((data) => {
+      
       // cache our list
-      this.tableCount_temp = _clone(data);
-      this.tableCount_rows = _clone(data);
-      this.tableCount_rowsFilter = _clone(data);
+      this.tableCount_temp = _clone(data[0]);
+      this.tableCount_rows = _clone(data[0]);
+      this.tableCount_rowsFilter = _clone(data[0]);
       // this.rowsExp = _clone(data);
       // this.rowsSort = _clone(data);
       // this.rowsSel = _clone(data);
@@ -111,12 +112,12 @@ export class HomeComponent implements OnInit {
   }
 
   LoadDBReport() {
-    this.apiurl = `http://192.168.1.165:8080/cmdbreport`;
+    this.apiurl = `http://localhost:8080/sp/cmdbreport`;
     this.api_loader((data) => {
       // cache our list
-      this.tableReport_temp = _clone(data);
-      this.tableReport_rows = _clone(data);
-      this.tableReport_rowsFilter = _clone(data);
+      this.tableReport_temp = _clone(data[0]);
+      this.tableReport_rows = _clone(data[0]);
+      this.tableReport_rowsFilter = _clone(data[0]);
       // this.rowsExp = _clone(data);
       // this.rowsSort = _clone(data);
       // this.rowsSel = _clone(data);
@@ -124,12 +125,12 @@ export class HomeComponent implements OnInit {
   }
 
   LoadDBCategory() {
-    this.apiurl = `http://192.168.1.165:8080/cmdbcategory`;
+    this.apiurl = `http://localhost:8080/sp/cmdbcategory`;
     this.api_loader((data) => {
       // cache our list
-      this.tableCategory_temp = _clone(data);
-      this.tableCategory_rows = _clone(data);
-      this.tableCategory_rowsFilter = _clone(data);
+      this.tableCategory_temp = _clone(data[0]);
+      this.tableCategory_rows = _clone(data[0]);
+      this.tableCategory_rowsFilter = _clone(data[0]);
     });
   }
 

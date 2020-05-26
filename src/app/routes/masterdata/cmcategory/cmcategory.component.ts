@@ -161,7 +161,7 @@ export class CmcategoryComponent implements OnInit {
 
   fetch(cb) {    
     const req = new XMLHttpRequest();   
-    req.open('GET', `http://192.168.1.165:8080/cmcat`);       
+    req.open('GET', `http://localhost:8080/cmcat`);       
 
     req.onload = () => {      
       cb(JSON.parse(req.response));
@@ -202,7 +202,7 @@ export class CmcategoryComponent implements OnInit {
   }
   
   onSelect({ selected }) {    
-    const jsonData = this.selected    
+    const jsonData = this.selected
     // console.log(jsonData[0].Code)
     // this.valForm.setValue['Code'].setValue(jsonData[0].Code)
     this.valForm.setValue({      
@@ -265,7 +265,7 @@ export class CmcategoryComponent implements OnInit {
           // req.open('POST', `http://localhost:8080/cmcatpost`, /* async = */ false);
           req.open(
             "POST",
-            `http://192.168.1.165:8080/api/cmcatpost`,
+            `http://localhost:8080/api/cmcatpost`,
             /* async = */ false
           );
           req.setRequestHeader(

@@ -63,6 +63,8 @@ export class CredmemoComponent implements OnInit {
   @ViewChild('cmlistSearch') cmlistSearch: ElementRef;
 
   isLoadingCMList = true
+  isLoadingCM = true
+  
 
   dateValid(AC: AbstractControl) {
     if (AC && AC.value && !moment(AC.value, "MM/DD/YYYY", true).isValid()) {
@@ -187,7 +189,7 @@ export class CredmemoComponent implements OnInit {
   //load select option -------------------------------------------------------- >
   LoadCategories() {
     this.apiSubmit = `GET`
-    this.apiurl = `http://192.168.1.165:8080/cmcat`;
+    this.apiurl = `http://localhost:8080/cmcat`;
     this.apiParam = null
     this.api_loader((data) => {
       // cache our list
@@ -197,7 +199,7 @@ export class CredmemoComponent implements OnInit {
 
   LoadBranches() {
     this.apiSubmit = `GET`
-    this.apiurl = `http://192.168.1.165:8080/cmbranches`;
+    this.apiurl = `http://localhost:8080/cmbranches`;
     this.apiParam = null
     this.api_loader((data) => {
       // cache our list
@@ -207,7 +209,7 @@ export class CredmemoComponent implements OnInit {
 
   LoadPaymode() {
     this.apiSubmit = `GET`
-    this.apiurl = `http://192.168.1.165:8080/cmpaymode`;
+    this.apiurl = `http://localhost:8080/cmpaymode`;
     this.apiParam = null
     this.api_loader((data) => {
       // cache our list
@@ -217,7 +219,7 @@ export class CredmemoComponent implements OnInit {
 
   LoadPatientTypes(){
     this.apiSubmit = `GET`
-      this.apiurl = `http://192.168.1.165:8080/cmpatienttype`;
+      this.apiurl = `http://localhost:8080/cmpatienttype`;
       this.apiParam = null
 
       this.api_loader((data) => {
@@ -228,7 +230,7 @@ export class CredmemoComponent implements OnInit {
 
   LoadSalesPersons() {
     this.apiSubmit = `GET`
-    this.apiurl = `http://192.168.1.165:8080/cmsalesperson`;
+    this.apiurl = `http://localhost:8080/cmsalesperson`;
     this.apiParam = null
     this.api_loader((data) => {
       // cache our list
@@ -255,7 +257,7 @@ export class CredmemoComponent implements OnInit {
       datePipe = this.dpipe
 
       this.apiSubmit = `POST`
-      this.apiurl = `http://192.168.1.165:8080/sp/cmlabdetails`;
+      this.apiurl = `http://localhost:8080/sp/cmlabdetails`;
       this.apiParam = _Param
 
       this.api_loader((data) => {
@@ -290,6 +292,20 @@ export class CredmemoComponent implements OnInit {
         this.cmlistModal.hide()
         this.cmlistSearch.nativeElement.value = '';
         // this.salespersons = _clone(data);
+
+        //table details
+        this.isLoadingCM = true
+        this.tableCM_temp = null
+        this.tableCM_rows = null
+        this.tableCM_rowsFilter = null  
+
+        setTimeout(() => {          
+            this.tableCM_temp = _clone(data);
+            this.tableCM_rows = _clone(data);
+            this.tableCM_rowsFilter = _clone(data);
+            this.isLoadingCM = false          
+        }, 100);
+
       });    
     } else {
       swal('Restricted', 'Cannot Select Done,Cancelled and Rejected!', 'error');
@@ -298,23 +314,38 @@ export class CredmemoComponent implements OnInit {
 
   }
 
+  CMListSelected = [];
+
+  SelectCMTable({ selected }){
+     //const jsonData = this.CMListSelected
+     console.log(selected) 
+  }  
+  
   //End Functions -------------------------------------------------------- >
 
   //Filters and Load Data
 
-  LoadCMTable() {
-    this.apiSubmit = `GET`
-    this.apiurl = `http://192.168.1.165:8080/cmdbcount`;
-    this.apiParam = null
-    this.api_loader((data) => {
-      // cache our list
-      this.tableCM_temp = _clone(data);
-      this.tableCM_rows = _clone(data);
-      this.tableCM_rowsFilter = _clone(data);
-      // this.rowsExp = _clone(data);
-      // this.rowsSort = _clone(data);
-      // this.rowsSel = _clone(data);
-    });
+  LoadCMTable(status){    
+    // this.isLoadingCM = true
+
+    // this.tableCM_temp = null
+    // this.tableCM_rows = null
+    // this.tableCM_rowsFilter = null
+
+    // setTimeout(() => {
+    //   var _Param = { Stat: status };
+    //   this.apiSubmit = `POST`
+    //   this.apiurl = `http://localhost:8080/sp/cmlabdetails`;
+    //   this.apiParam = _Param
+
+    //   this.api_loader((data) => {
+    //     // cache our list
+    //     this.tableCM_temp = _clone(data);
+    //     this.tableCM_rows = _clone(data);
+    //     this.tableCM_rowsFilter = _clone(data);
+    //     this.isLoadingCM = false
+    //   });              
+    // }, 100);    
   }
 
   FilterCMTable(event) {
@@ -386,7 +417,7 @@ export class CredmemoComponent implements OnInit {
     setTimeout(() => {
       var _Param = { Stat: status };
       this.apiSubmit = `POST`
-      this.apiurl = `http://192.168.1.165:8080/sp/cmloadcmlist`;
+      this.apiurl = `http://localhost:8080/sp/cmloadcmlist`;
       this.apiParam = _Param
 
       this.api_loader((data) => {
@@ -396,8 +427,7 @@ export class CredmemoComponent implements OnInit {
         this.tableCMList_rowsFilter = _clone(data);
         this.isLoadingCMList = false
       });              
-    }, 100);
-    
+    }, 100);    
   }
 
 
