@@ -72,7 +72,7 @@
     "ngx-select-ex": "4.0.0",
     "node-sass": "^4.14.0",
     "popper.js": "1.16.1",
-    "read-excel-file": "^4.0.6",
+    "read-excel-file": "^4.1.0",
     "rxjs": "6.5.5",
     "rxjs-compat": "6.5.5",
     "screenfull": "5.0.2",
